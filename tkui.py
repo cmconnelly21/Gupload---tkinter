@@ -32,8 +32,10 @@ class Gupload(tk.Frame):
 
     def create_widgets(self):
         self.dict = {}
-        self.dropdown = ttk.Combobox(self)
+        choices = tk.StringVar()
+        self.dropdown = ttk.Combobox(self, width=12, textvariable=choices)
         self.dropdown['values'] = self.dict
+        self.dropdown.grid(column=1, row=10)
         self.dropdown.pack(side="top")
 
         self.addbutton = ttk.Button(self)
@@ -104,8 +106,12 @@ class Gupload(tk.Frame):
 
         if name not in self.dict.keys():
             self.dict[name] = tup
-            print(self.dict)
+            print(self.dict.keys())
+            print(len(self.dict))
+            print(len(self.dropdown['values']))
             n = len(self.dropdown['values'])
+            print(self.dict)
+            self.dropdown.configure(values = self.dict)
             if n == len(self.dropdown['values']):
                 self.Errorwin()
                 print('error1')
