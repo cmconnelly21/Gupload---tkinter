@@ -9,6 +9,7 @@ import pickle
 
 config_dir = os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'Gupload')
 
+
 class Gupload(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
@@ -32,7 +33,7 @@ class Gupload(tk.Frame):
     def create_widgets(self):
         self.dict = {}
         self.dropdown = ttk.Combobox(self)
-        self.dropdown.values = self.dict
+        self.dropdown['values'] = self.dict
         self.dropdown.pack(side="top")
 
         self.addbutton = ttk.Button(self)
@@ -57,7 +58,7 @@ class Gupload(tk.Frame):
         f = open(self.picklefilename, 'rb')
         self.dict = pickle.load(f)
         for name in self.dict.keys():
-            print(name, self.dict[name], len(self.dropdown.values))
+            print(name, self.dict[name], len(self.dropdown['values']))
 
 
     def dump(self):
@@ -77,7 +78,7 @@ class Gupload(tk.Frame):
         print('hello')
 
     def errclose(self):
-        tk.Toplevel.destroy
+        root.destroy
 
     def Errorwin(self):
         errorwin = tk.Toplevel(master=self.parent)
@@ -87,32 +88,37 @@ class Gupload(tk.Frame):
 
     def Errorwin2(self):
         errorwin2 = tk.Toplevel(master=self.parent)
-        Label(errorwin,text="Error: entry "+ name +" exists")
+        Label(errorwin2,text="Error: entry "+ name +" exists")
         self.extbutton2 = Button(errorwin,text="OK",command=self.errclose)
         self.extbutton2.pack(side="bottom")
 
+    def searchdir(self):
+        global dirsel
+        dirsel = filedialog.askdirectory()
+
 
     def addentry(self, obj):
-        name = obj.name.get
-        tup = (obj.local.selection_get, obj.remote.get)
+        name = obj.name.get()
+        tup = (dirsel, obj.remote.get())
+        print(name, tup)
 
         if name not in self.dict.keys():
             self.dict[name] = tup
-            n = len(self.dropdown.values)
-            if n == len(self.dropdown.values):
+            print(self.dict)
+            n = len(self.dropdown['values'])
+            if n == len(self.dropdown['values']):
                 self.Errorwin()
-            print(name, tup, len(self.dropdown.values))
+                print('error1')
+            print(name, tup, len(self.dropdown['values']))
             self.dump()
         else:
             self.Errorwin2()
-
+            print('error2')
 
     def buttonfieldaction(self):
         self.addentry(self)
-        tk.Toplevel.destroy
+        root.destroy
 
-    def searchdir(self):
-        filedialog.askdirectory()
 
 
     def AddLocwin(self):
