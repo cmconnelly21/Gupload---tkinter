@@ -24,16 +24,19 @@ class Gupload(tk.Frame):
 
         if self.picklefilename.exists():
             self.load()
+            update = self.dropdown.configure(values = sorted(list(self.dict.keys())))
+            return update
         else:
             f = open(self.picklefilename, 'wb')
             pickle.dump({}, f)
             f.close()
             self.load()
 
+
     def create_widgets(self):
         self.dict = {}
         choices = tk.StringVar()
-        self.dropdown = ttk.Combobox(self, width=12, textvariable=choices, \
+        self.dropdown = ttk.Combobox(self, width=20, textvariable=choices, \
         values=sorted(list(self.dict.keys())))
         #self.dropdown['values'] = self.dict
         self.dropdown.grid(column=5, row=1)
@@ -60,8 +63,6 @@ class Gupload(tk.Frame):
     def load(self):
         f = open(self.picklefilename, 'rb')
         self.dict = pickle.load(f)
-        update = self.dropdown.configure(values = sorted(list(self.dict.keys())))
-        return update
         for name in self.dict.keys():
             print(name, self.dict[name], len(self.dropdown['values']))
 
@@ -83,18 +84,23 @@ class Gupload(tk.Frame):
         print('hello')
 
     def errclose(self):
-        tk.Toplevel.destroy(self)
+        errorwin.destroy()
+
+    def errclose2(self):
+        errorwin2.destroy()
 
     def Errorwin(self):
-        errorwin = tk.Toplevel(master=self.parent)
+        global errorwin
+        errorwin = tk.Toplevel(master=self.parent, width=200, height=120)
         Label(errorwin,text="Error: duplicate destination folder").pack()
         self.extbutton = Button(errorwin,text="OK",command=self.errclose)
         self.extbutton.pack(side="bottom")
 
     def Errorwin2(self):
-        errorwin2 = tk.Toplevel(master=self.parent)
+        global errorwin2
+        errorwin2 = tk.Toplevel(master=self.parent, width=200, height=120)
         Label(errorwin2,text="Error: entry "+ name +" exists").pack()
-        self.extbutton2 = Button(errorwin,text="OK",command=self.errclose)
+        self.extbutton2 = Button(errorwin,text="OK",command=self.errclose2)
         self.extbutton2.pack(side="bottom")
 
     def searchdir(self):
@@ -127,12 +133,13 @@ class Gupload(tk.Frame):
 
     def buttonfieldaction(self):
         self.addentry(self)
-        tk.Toplevel.destroy(self)
+        newwin.destroy()
 
 
 
     def AddLocwin(self):
-        newwin = tk.Toplevel(master=self.parent)
+        global newwin
+        newwin = tk.Toplevel(master=self.parent, width=200, height=120)
         Label(newwin,text="Team Name").pack()
         self.name = ttk.Entry(newwin)
         self.name.pack(side="top")
@@ -148,5 +155,6 @@ class Gupload(tk.Frame):
 
 
 root = tk.Tk()
+root.geometry("200x125")
 app = Gupload(master=root)
 app.mainloop()
