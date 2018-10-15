@@ -33,9 +33,10 @@ class Gupload(tk.Frame):
     def create_widgets(self):
         self.dict = {}
         choices = tk.StringVar()
-        self.dropdown = ttk.Combobox(self, width=12, textvariable=choices)
-        self.dropdown['values'] = self.dict
-        self.dropdown.grid(column=1, row=10)
+        self.dropdown = ttk.Combobox(self, width=12, textvariable=choices, \
+        values=sorted(list(self.dict.keys())))
+        #self.dropdown['values'] = self.dict
+        self.dropdown.grid(column=5, row=1)
         self.dropdown.pack(side="top")
 
         self.addbutton = ttk.Button(self)
@@ -59,6 +60,8 @@ class Gupload(tk.Frame):
     def load(self):
         f = open(self.picklefilename, 'rb')
         self.dict = pickle.load(f)
+        update = self.dropdown.configure(values = sorted(list(self.dict.keys())))
+        return update
         for name in self.dict.keys():
             print(name, self.dict[name], len(self.dropdown['values']))
 
@@ -80,17 +83,17 @@ class Gupload(tk.Frame):
         print('hello')
 
     def errclose(self):
-        root.destroy
+        tk.Toplevel.destroy(self)
 
     def Errorwin(self):
         errorwin = tk.Toplevel(master=self.parent)
-        Label(errorwin,text="Error: duplicate destination folder")
+        Label(errorwin,text="Error: duplicate destination folder").pack()
         self.extbutton = Button(errorwin,text="OK",command=self.errclose)
         self.extbutton.pack(side="bottom")
 
     def Errorwin2(self):
         errorwin2 = tk.Toplevel(master=self.parent)
-        Label(errorwin2,text="Error: entry "+ name +" exists")
+        Label(errorwin2,text="Error: entry "+ name +" exists").pack()
         self.extbutton2 = Button(errorwin,text="OK",command=self.errclose)
         self.extbutton2.pack(side="bottom")
 
@@ -105,13 +108,14 @@ class Gupload(tk.Frame):
         print(name, tup)
 
         if name not in self.dict.keys():
+            n = len(self.dropdown['values'])
             self.dict[name] = tup
             print(self.dict.keys())
             print(len(self.dict))
             print(len(self.dropdown['values']))
-            n = len(self.dropdown['values'])
             print(self.dict)
-            self.dropdown.configure(values = self.dict)
+            update = self.dropdown.configure(values = sorted(list(self.dict.keys())))
+            return update
             if n == len(self.dropdown['values']):
                 self.Errorwin()
                 print('error1')
@@ -123,7 +127,7 @@ class Gupload(tk.Frame):
 
     def buttonfieldaction(self):
         self.addentry(self)
-        root.destroy
+        tk.Toplevel.destroy(self)
 
 
 
