@@ -78,11 +78,13 @@ class Gupload(tk.Frame):
 
 
     def upload(self):
-        #print('local', self.dropdown.value[0])
-        #print('remote', self.dropdown.value[1])
-        #folder_upload.file_upload(self.dropdown.value[1], \
-        #self.dropdown.value[0], self.progmsg)
-        print('hello')
+        selection = self.dropdown.selection_get()
+        if selection in self.dict.keys():
+            print('local', self.dict.get(selection)[0])
+            print('remote', self.dict.get(selection)[1])
+            folder_upload.file_upload(self.dict.get(selection)[1]), \
+            self.dict.get(selection)[0], self.progmsg)
+        #print('hello')
 
     def errclose(self):
         errorwin.destroy()
