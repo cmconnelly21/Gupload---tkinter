@@ -82,8 +82,8 @@ class Gupload(tk.Frame):
         if selection in self.dict.keys():
             print('local', self.dict.get(selection)[0])
             print('remote', self.dict.get(selection)[1])
-            folder_upload.file_upload(self.dict.get(selection)[1]), \
-            self.dict.get(selection)[0], self.progmsg)
+            folder_upload.file_upload((self.dict.get(selection)[1]), \
+            (self.dict.get(selection)[0]), self.progmsg)
         #print('hello')
 
     def errclose(self):
@@ -122,11 +122,13 @@ class Gupload(tk.Frame):
             remotes = [tup[1] for tup in values]
             print('locals', locals)
             print('remotes', remotes)
+            if len(name) == 0:
+                self.Errorwin('No name given')
             if tup[0] in locals:
-                self.Errorwin('dup local')
+                self.Errorwin('Duplicate local folder')
                 return
             if tup[1] in remotes:
-                self.Errorwin('dup remote')
+                self.Errorwin('Duplicate remote folder')
                 return
             self.dict[name] = tup
 
