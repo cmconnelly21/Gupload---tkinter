@@ -5,7 +5,7 @@ from tkinter import filedialog
 import os
 from pathlib import Path
 import folder_upload
-import pickle
+import json
 
 config_dir = os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'Gupload')
 
@@ -19,17 +19,17 @@ class Gupload(tk.Frame):
 
         self.parent=root
 
-        self.picklefilename = Path(config_dir, 'foldloc.dat')
+        self.jsonfilename = Path(config_dir, 'foldloc.dat')
         if not os.path.exists(config_dir):
             os.mkdir(config_dir)
 
-        if self.picklefilename.exists():
+        if self.jsonfilename.exists():
             self.load()
             update = self.dropdown.configure(values = sorted(list(self.dict.keys())))
             return update
         else:
-            f = open(self.picklefilename, 'wb')
-            pickle.dump({}, f)
+            f = open(self.jsonfilename, 'w')
+            json.dump({}, f)
             f.close()
             self.load()
 
@@ -61,16 +61,16 @@ class Gupload(tk.Frame):
         self.quit.pack(side="bottom")
 
     def load(self):
-        f = open(self.picklefilename, 'rb')
-        self.dict = pickle.load(f)
+        f = open(self.jsonfilename, 'r')
+        self.dict = json.load(f)
         for name in self.dict.keys():
             print(name, self.dict[name], len(self.dropdown['values']))
 
 
     def dump(self):
-        f = open(self.picklefilename, 'wb')
+        f = open(self.jsonfilename, 'w')
         print(self.dict)
-        pickle.dump(self.dict, f)
+        json.dump(self.dict, f)
         f.close()
 
     def progmsg(self, status):
