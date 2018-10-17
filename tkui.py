@@ -90,18 +90,18 @@ class Gupload(tk.Frame):
     def errclose2(self):
         errorwin2.destroy()
 
-    def Errorwin(self):
+    def Errorwin(self, msg):
         global errorwin
         errorwin = tk.Toplevel(master=self.parent, width=200, height=120)
-        Label(errorwin,text="Error: duplicate destination folder").pack()
+        Label(errorwin, text=msg).pack()
         self.extbutton = Button(errorwin,text="OK",command=self.errclose)
         self.extbutton.pack(side="bottom")
 
-    def Errorwin2(self):
+    def Errorwin2(self, name):
         global errorwin2
         errorwin2 = tk.Toplevel(master=self.parent, width=200, height=120)
         Label(errorwin2,text="Error: entry "+ name +" exists").pack()
-        self.extbutton2 = Button(errorwin,text="OK",command=self.errclose2)
+        self.extbutton2 = Button(errorwin2,text="OK",command=self.errclose2)
         self.extbutton2.pack(side="bottom")
 
     def searchdir(self):
@@ -115,21 +115,25 @@ class Gupload(tk.Frame):
         print(name, tup)
 
         if name not in self.dict.keys():
-            n = len(self.dropdown['values'])
+            values = self.dict.values()
+            locals = [tup[0] for tup in values]
+            remotes = [tup[1] for tup in values]
+            print('locals', locals)
+            print('remotes', remotes)
+            if tup[0] in locals:
+                self.Errorwin('dup local')
+                return
+            if tup[1] in remotes:
+                self.Errorwin('dup remote')
+                return
             self.dict[name] = tup
-            print(self.dict.keys())
-            print(len(self.dict))
-            print(len(self.dropdown['values']))
-            print(self.dict)
+
             update = self.dropdown.configure(values = sorted(list(self.dict.keys())))
-            if n == len(self.dropdown['values']):
-                self.Errorwin()
-                print('error1')
             print(name, tup, len(self.dropdown['values']))
             self.dump()
             return update
         else:
-            self.Errorwin2()
+            self.Errorwin2(name)
             print('error2')
 
     def buttonfieldaction(self):
