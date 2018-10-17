@@ -13,6 +13,7 @@ config_dir = os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'Gupload'
 class Gupload(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
+        self.dict = {}
         self.pack()
         self.create_widgets()
 
@@ -34,7 +35,6 @@ class Gupload(tk.Frame):
 
 
     def create_widgets(self):
-        self.dict = {}
         choices = tk.StringVar()
         self.dropdown = ttk.Combobox(self, width=20, textvariable=choices, \
         values=sorted(list(self.dict.keys())))
@@ -69,6 +69,7 @@ class Gupload(tk.Frame):
 
     def dump(self):
         f = open(self.picklefilename, 'wb')
+        print(self.dict)
         pickle.dump(self.dict, f)
         f.close()
 
@@ -121,12 +122,12 @@ class Gupload(tk.Frame):
             print(len(self.dropdown['values']))
             print(self.dict)
             update = self.dropdown.configure(values = sorted(list(self.dict.keys())))
-            return update
             if n == len(self.dropdown['values']):
                 self.Errorwin()
                 print('error1')
             print(name, tup, len(self.dropdown['values']))
             self.dump()
+            return update
         else:
             self.Errorwin2()
             print('error2')
