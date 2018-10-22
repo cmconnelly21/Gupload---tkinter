@@ -52,8 +52,7 @@ class Gupload(tk.Frame):
         self.button["command"] = self.upload
         self.button.pack(side="top")
 
-        self.progress = ttk.Entry(self)
-        self.progress["text"] = self.progmsg
+        self.progress = ttk.Label(self)
         self.progress.pack(side="top")
 
         self.quit = tk.Button(self, text="QUIT", fg="red",
@@ -73,7 +72,7 @@ class Gupload(tk.Frame):
         json.dump(self.dict, f)
         f.close()
 
-    def progmsg(self, status):
+    def setStatus(self, status):
         self.progress["text"] = status
 
 
@@ -83,7 +82,7 @@ class Gupload(tk.Frame):
             print('local', self.dict.get(selection)[0])
             print('remote', self.dict.get(selection)[1])
             folder_upload.file_upload((self.dict.get(selection)[1]), \
-            (self.dict.get(selection)[0]), self.progmsg)
+            (self.dict.get(selection)[0]), self.setStatus)
         #print('hello')
 
     def errclose(self):
@@ -95,6 +94,7 @@ class Gupload(tk.Frame):
     def Errorwin(self, msg):
         global errorwin
         errorwin = tk.Toplevel(master=self.parent, width=200, height=120)
+        errorwin.geometry("150x50")
         Label(errorwin, text=msg).pack()
         self.extbutton = Button(errorwin,text="OK",command=self.errclose)
         self.extbutton.pack(side="bottom")
@@ -102,6 +102,7 @@ class Gupload(tk.Frame):
     def Errorwin2(self, name):
         global errorwin2
         errorwin2 = tk.Toplevel(master=self.parent, width=200, height=120)
+        errorwin2.geometry("150x50")
         Label(errorwin2,text="Error: entry "+ name +" exists").pack()
         self.extbutton2 = Button(errorwin2,text="OK",command=self.errclose2)
         self.extbutton2.pack(side="bottom")
@@ -149,6 +150,7 @@ class Gupload(tk.Frame):
     def AddLocwin(self):
         global newwin
         newwin = tk.Toplevel(master=self.parent, width=200, height=120)
+        newwin.geometry("200x150")
         Label(newwin,text="Team Name").pack()
         self.name = ttk.Entry(newwin)
         self.name.pack(side="top")

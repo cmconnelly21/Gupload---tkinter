@@ -9,7 +9,7 @@ fid = "1SPq8YFb7LpjYVFcTiu8Q8AszWRXc_O-H"
 
 loc = 'C:\\Users\\cmconnelly\\Desktop\\UploadData'
 
-def file_upload(folder_id, src, progmsg):
+def file_upload(folder_id, src, setStatus):
 
     # folder_id: GoogleDriveFile['id']
     _q = {'q': "'{}' in parents and trashed=false".format(folder_id)}
@@ -33,7 +33,7 @@ def file_upload(folder_id, src, progmsg):
         else:
             pass
 
-        progmsg('finished uploading {} files'.format(num))
+        setStatus('finished uploading {} files'.format(num))
 
 
 if __name__ == "__main__":
