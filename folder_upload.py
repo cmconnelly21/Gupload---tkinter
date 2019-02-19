@@ -5,9 +5,9 @@ from pydrive.drive import GoogleDrive
 gauth = GoogleAuth()
 drive = GoogleDrive(gauth)
 
-fid = "1SPq8YFb7LpjYVFcTiu8Q8AszWRXc_O-H"
+#fid = "1SPq8YFb7LpjYVFcTiu8Q8AszWRXc_O-H"
 
-loc = 'C:\\Users\\cmconnelly\\Desktop\\UploadData'
+#loc = 'C:\\Users\\cmconnelly\\Desktop\\UploadData'
 
 def file_upload(folder_id, src, setStatus):
 
